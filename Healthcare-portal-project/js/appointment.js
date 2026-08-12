@@ -1,0 +1,322 @@
+const appointmentForm = document.getElementById("appointmentForm");
+
+appointmentForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const appointmentData = {
+        patientName: document.getElementById("patientName").value.trim(),
+
+        age: Number(
+            document.getElementById("patientAge").value
+        ),
+
+        gender: document.getElementById("patientGender").value,
+
+        phone: document.getElementById("patientPhone").value.trim(),
+
+        email: document.getElementById("patientEmail").value.trim(),
+
+        doctor: document.getElementById("appointmentDoctor").value,
+
+        appointmentDate:
+            document.getElementById("appointmentDate").value,
+
+        appointmentTime:
+            document.getElementById("appointmentTime").value,
+
+        symptoms:
+            document.getElementById("symptoms").value.trim()
+    };
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/appointments/book",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(appointmentData)
+            }
+        );
+
+        const result = await response.json();
+
+        if (result.success) {
+            
+
+            console.log("Saved appointment:", result.appointment);
+
+            // Show your existing confirmation modal
+            document.getElementById("modalDoctorName").textContent =
+                result.appointment.doctor;
+
+            document.getElementById("modalPatientName").textContent =
+                result.appointment.patientName;
+
+            document.getElementById("modalDate").textContent =
+                result.appointment.appointmentDate;
+
+            document.getElementById("modalTime").textContent =
+                result.appointment.appointmentTime;
+
+            document.getElementById("confirmModal").classList.add("show");
+
+            appointmentForm.reset();
+
+        } else {
+            alert(result.message);
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+
+        alert(
+            "Unable to connect to the server. Please try again."
+        );
+    }
+});
+
+
+// demo:
+
+'use strict';
+
+(function () {
+
+  /* ── Helpers ── */
+  function val(id)  { return (document.getElementById(id)?.value || '').trim(); }
+  function text(id) { return document.getElementById(id)?.options[document.getElementById(id).selectedIndex]?.text || ''; }
+  function fmt(dateStr) {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  /* ── Populate doctor <select> ── */
+  function populateDoctorSelect() {
+    const sel = document.getElementById('appointmentDoctor');
+    if (!sel || typeof doctors === 'undefined') return;
+
+    sel.innerHTML = '<option value="">— Select a Doctor —</option>';
+    doctors.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = `${d.name} (${d.specialization})`;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ── Pre-select doctor from URL param ── */
+  function preselectDoctor() {
+    const params   = new URLSearchParams(window.location.search);
+    const docId    = params.get('doctor');
+    const sel      = document.getElementById('appointmentDoctor');
+    if (docId && sel) {
+      sel.value = docId;
+      sel.dispatchEvent(new Event('change'));
+    }
+  }
+
+  /* ── Set min date (today) on date input ── */
+  function setDateConstraints() {
+    const dateInput = document.getElementById('appointmentDate');
+    if (!dateInput) return;
+    const today = new Date();
+    const yyyy  = today.getFullYear();
+    const mm    = String(today.getMonth() + 1).padStart(2, '0');
+    const dd    = String(today.getDate()).padStart(2, '0');
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+    // max = 90 days
+    const maxDate = new Date(today);
+    maxDate.setDate(maxDate.getDate() + 90);
+    const ymm  = maxDate.getFullYear();
+    const mmm  = String(maxDate.getMonth() + 1).padStart(2, '0');
+    const ddd  = String(maxDate.getDate()).padStart(2, '0');
+    dateInput.max = `${ymm}-${mmm}-${ddd}`;
+  }
+
+  /* ── Update live appointment summary ── */
+  function updateSummary() {
+    const container = document.getElementById('summaryContent');
+    if (!container) return;
+
+    const docId  = val('appointmentDoctor');
+    const doctor = typeof doctors !== 'undefined' ? doctors.find(d => d.id == docId) : null;
+    const name   = val('patientName');
+    const date   = val('appointmentDate');
+    const time   = text('appointmentTime');
+
+    if (!docId && !name) {
+      container.innerHTML = `
+        <div class="summary-placeholder">
+          <i class="fas fa-calendar-heart"></i>
+          Fill in the form to see your appointment summary
+        </div>`;
+      return;
+    }
+
+    let doctorBlock = '';
+    if (doctor) {
+      doctorBlock = `
+        <div class="summary-doctor">
+          <div class="summary-doctor-avatar">${doctor.emoji}</div>
+          <div>
+            <div class="summary-doctor-name">${doctor.name}</div>
+            <div class="summary-doctor-spec">${doctor.specialization}</div>
+          </div>
+        </div>`;
+    }
+
+    container.innerHTML = `
+      ${doctorBlock}
+      <div class="summary-rows">
+        <div class="summary-row">
+          <i class="fas fa-user"></i>
+          <div>
+            <div class="summary-row-label">Patient</div>
+            <div class="summary-row-value">${name || '—'}</div>
+          </div>
+        </div>
+        <div class="summary-row">
+          <i class="fas fa-calendar"></i>
+          <div>
+            <div class="summary-row-label">Date</div>
+            <div class="summary-row-value">${date ? fmt(date) : '—'}</div>
+          </div>
+        </div>
+        <div class="summary-row">
+          <i class="fas fa-clock"></i>
+          <div>
+            <div class="summary-row-label">Time Slot</div>
+            <div class="summary-row-value">${time || '—'}</div>
+          </div>
+        </div>
+        ${doctor ? `
+        <div class="summary-row">
+          <i class="fas fa-indian-rupee-sign"></i>
+          <div>
+            <div class="summary-row-label">Fee</div>
+            <div class="summary-row-value">₹${doctor.fee.toLocaleString()}</div>
+          </div>
+        </div>` : ''}
+      </div>`;
+  }
+
+  /* ── Open / close modal ── */
+  function openModal(data) {
+    const overlay = document.getElementById('confirmModal');
+    if (!overlay) return;
+
+    document.getElementById('modalDoctorName').textContent  = data.doctorName;
+    document.getElementById('modalPatientName').textContent = data.patientName;
+    document.getElementById('modalDate').textContent        = fmt(data.date);
+    document.getElementById('modalTime').textContent        = data.time;
+    document.getElementById('modalFee').textContent         = data.fee ? `₹${data.fee}` : '—';
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalCloseBtn').focus();
+  }
+
+  function closeModal() {
+    const overlay = document.getElementById('confirmModal');
+    if (!overlay) return;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Reset form ── */
+  function resetForm() {
+    const form = document.getElementById('appointmentForm');
+    if (!form) return;
+    form.reset();
+    // remove validation classes
+    form.querySelectorAll('.valid, .invalid').forEach(el => {
+      el.classList.remove('valid', 'invalid');
+    });
+    form.querySelectorAll('[id$="Error"]').forEach(el => {
+      el.innerHTML = '';
+    });
+    updateSummary();
+  }
+
+  /* ── Submit handler ── */
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (typeof validateAppointmentForm === 'function') {
+      if (!validateAppointmentForm()) {
+        showNotification('Please fix the errors in the form before submitting.', 'error');
+        // scroll to first error
+        const firstErr = document.querySelector('.invalid');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    const docId  = val('appointmentDoctor');
+    const doctor = typeof doctors !== 'undefined' ? doctors.find(d => d.id == docId) : null;
+
+    const data = {
+      patientName: val('patientName'),
+      date: val('appointmentDate'),
+      time: text('appointmentTime'),
+      doctorName: doctor ? doctor.name : '—',
+      fee: doctor ? doctor.fee : null
+    };
+
+    // Simulate brief "processing" delay
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing…';
+    }
+
+    setTimeout(() => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-calendar-check"></i> Confirm Appointment';
+      }
+      openModal(data);
+      showNotification(`Appointment booked with ${data.doctorName}!`, 'success', 4500);
+      resetForm();
+    }, 900);
+  }
+
+  /* ── Init ── */
+  function init() {
+    if (!document.getElementById('appointmentForm')) return;
+
+    populateDoctorSelect();
+    setDateConstraints();
+    preselectDoctor();
+    updateSummary();
+
+    // live summary update
+    ['patientName', 'appointmentDoctor', 'appointmentDate', 'appointmentTime'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updateSummary);
+      if (el) el.addEventListener('change', updateSummary);
+    });
+
+    // form submit
+    document.getElementById('appointmentForm').addEventListener('submit', handleSubmit);
+
+    // modal close
+    document.getElementById('modalCloseBtn')?.addEventListener('click', closeModal);
+    document.getElementById('confirmModal')?.addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+  }
+
+  
+
+  document.addEventListener('DOMContentLoaded', init);
+})();

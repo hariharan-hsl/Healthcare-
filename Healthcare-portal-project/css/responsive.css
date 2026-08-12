@@ -1,0 +1,258 @@
+
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  /* Nav */
+  .nav-links,
+  .nav-actions .btn {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+
+  /* Hero */
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 48px;
+  }
+  .hero-actions {
+    justify-content: center;
+  }
+  .hero-trust {
+    justify-content: center;
+  }
+  .hero-illustration {
+    order: -1;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  /* Stats */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* How it works */
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .steps-grid .step-connector {
+    display: none;
+  }
+
+  /* Appointment */
+  .appointment-grid {
+    grid-template-columns: 1fr;
+  }
+  .sidebar-sticky {
+    position: static;
+  }
+
+  /* Contact */
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-sidebar {
+    position: static;
+  }
+
+  /* Story / About */
+  .story-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  :root {
+    --nav-h: 62px;
+  }
+
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding: 72px 0 56px;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+
+  /* Stats */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .stat-card {
+    padding: 20px 16px;
+  }
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  /* About preview */
+  .about-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* How it works */
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Doctors */
+  .filter-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-chips {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    flex-wrap: nowrap;
+  }
+  .filter-chips::-webkit-scrollbar {
+    height: 4px;
+  }
+  .filter-chips::-webkit-scrollbar-track {
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .filter-chips::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .doctors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Form */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-group.full {
+    grid-column: 1;
+  }
+  .form-card {
+    padding: 24px 20px;
+  }
+  .form-submit {
+    grid-column: 1;
+  }
+  .contact-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-form-grid .form-group.full {
+    grid-column: 1;
+  }
+  .contact-submit {
+    grid-column: 1;
+  }
+
+  /* Modal */
+  .modal-card {
+    padding: 28px 20px;
+  }
+  .modal-title {
+    font-size: 1.4rem;
+  }
+
+  /* About */
+  .values-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .team-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .why-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .mission-stats {
+    gap: 28px;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  /* Page hero */
+  .page-hero {
+    padding: 52px 0 40px;
+  }
+
+  /* Section padding */
+  .values-section,
+  .story-section,
+  .team-section,
+  .why-section,
+  .faq-section,
+  .mission-section {
+    padding: 50px 0;
+  }
+}
+
+/* ── Small Mobile ── */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-trust {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* ── Print ── */
+@media print {
+  .navbar,
+  .footer,
+  .hamburger,
+  .mobile-nav,
+  .theme-toggle,
+  .btn-pulse {
+    display: none !important;
+  }
+  body {
+    padding-top: 0;
+  }
+  .page-wrapper {
+    padding-top: 0;
+  }
+}

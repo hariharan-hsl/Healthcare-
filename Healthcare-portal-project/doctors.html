@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Browse and filter our expert doctors by specialization. Book an appointment with top-rated specialists." />
+    <title>Find Doctors | HealthCare+</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/doctor.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="index.html" class="nav-logo" aria-label="HealthCare+ Home">
+                    <div class="nav-logo-icon" aria-hidden="true">✚</div>
+                    HealthCare<span style="color:#5eead4">+</span>
+                </a>
+                <ul class="nav-links" role="list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="doctors.html" class="active">Doctors</a></li>
+                    <li><a href="appointment.html">Appointment</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <a href="appointment.html" class="btn btn-primary btn-sm">Book Now</a>
+                    <button id="hamburger" class="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <nav id="mobileNav" class="mobile-nav" aria-label="Mobile navigation">
+        <a href="index.html">🏠 Home</a>
+        <a href="doctors.html">👨‍⚕️ Doctors</a>
+        <a href="appointment.html">📅 Appointment</a>
+        <a href="about.html">ℹ️ About</a>
+        <a href="contact.html">📞 Contact</a>
+    </nav>
+
+    <main class="page-wrapper">
+
+        <!-- Page Hero -->
+        <section class="page-hero" aria-labelledby="pageHeroTitle">
+            <div class="container">
+                <div class="page-hero-content">
+                    <h1 id="pageHeroTitle">Find Your Doctor</h1>
+                    <p>Browse our network of 50+ verified specialists across 5 medical departments</p>
+                    <nav class="breadcrumb" aria-label="Breadcrumb">
+                        <a href="index.html">Home</a>
+                        <i class="fas fa-chevron-right" style="font-size:.7rem"></i>
+                        <span>Doctors</span>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ FILTER BAR ══ -->
+        <div class="filter-section" role="search" aria-label="Filter doctors">
+            <div class="container">
+                <div class="filter-inner">
+                    <!-- Search -->
+                    <div class="search-wrap">
+                        <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                        <input type="search" id="searchInput" class="search-input"
+                            placeholder="Search by name, hospital, or specialization…" aria-label="Search doctors"
+                            autocomplete="off" />
+                    </div>
+
+                    <!-- Specialization chips -->
+                    <div class="filter-chips" role="group" aria-label="Filter by specialization">
+                        <span class="filter-label">Filter:</span>
+                        <button class="chip active" data-spec="all" aria-pressed="true">All</button>
+                        <button class="chip" data-spec="Cardiologist" aria-pressed="false">❤️ Cardiology</button>
+                        <button class="chip" data-spec="Dentist" aria-pressed="false">🦷 Dentistry</button>
+                        <button class="chip" data-spec="Orthopedic" aria-pressed="false">🦴 Orthopedics</button>
+                        <button class="chip" data-spec="Neurologist" aria-pressed="false">🧠 Neurology</button>
+                        <button class="chip" data-spec="Pediatrician" aria-pressed="false">👶 Pediatrics</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results bar -->
+        <div class="container">
+            <div class="results-bar">
+                <p class="results-count" id="resultsCount" role="status" aria-live="polite">
+                    Showing <strong>12</strong> doctors
+                </p>
+                <p style="font-size:.875rem;color:var(--text-muted);">
+                    <i class="fas fa-info-circle"></i> Click "Book" to schedule an appointment
+                </p>
+            </div>
+        </div>
+
+        <!-- ══ DOCTORS GRID ══ -->
+        <section class="doctors-section" aria-labelledby="doctorsHeading">
+            <h2 id="doctorsHeading" class="visually-hidden">Doctors List</h2>
+            <div class="container">
+                <div id="doctorsGrid" class="doctors-grid" role="list" aria-label="Available doctors">
+                    <!-- Populated by doctors.js -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <div class="nav-logo-icon">✚</div>
+                        HealthCare<span style="color:#5eead4">+</span>
+                    </a>
+                    <p>Connecting patients with the best healthcare professionals. Your health, our commitment.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="doctors.html">Find Doctors</a></li>
+                        <li><a href="appointment.html">Book Appointment</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Specializations</h4>
+                    <ul>
+                        <li><a href="doctors.html">Cardiology</a></li>
+                        <li><a href="doctors.html">Dentistry</a></li>
+                        <li><a href="doctors.html">Orthopedics</a></li>
+                        <li><a href="doctors.html">Neurology</a></li>
+                        <li><a href="doctors.html">Pediatrics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Info</h4>
+                    <ul>
+                        <li><a href="tel:+911234567890">📞 +91 12345 67890</a></li>
+                        <li><a href="mailto:info@healthcareplus.in">✉️ info@healthcareplus.in</a></li>
+                        <li><a href="#">📍 Mumbai, Maharashtra</a></li>
+                        <li><a href="#">🕐 Mon–Sat, 8am–8pm</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 HealthCare+. All rights reserved.</p>
+                <p>Made with ❤️ for better healthcare</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+
+    <script src="js/notification.js"></script>
+    <script src="js/doctors.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
