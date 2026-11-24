@@ -1,0 +1,185 @@
+.specialties-section {
+  padding: 80px 0;
+  background: var(--bg-surface);
+}
+
+.story-image-wrap .about-story-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-cta {
+  padding: 64px 0;
+  text-align: center;
+}
+
+.about-cta .section-subtitle {
+  margin: 0 auto 28px;
+}
+
+.about-cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.specialty-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.specialty-card {
+  min-width: 0;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.specialty-card:hover,
+.specialty-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.specialty-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 1.25rem;
+}
+
+[data-theme="dark"] .specialty-icon {
+  background: rgba(13, 148, 136, 0.15);
+  color: #5eead4;
+}
+
+.specialty-name {
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-family: "Outfit", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.specialty-description {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.specialty-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.steps-grid {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+.step-card {
+  height: 100%;
+}
+
+.results-bar {
+  gap: 12px;
+}
+
+.faq-question {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1100px) {
+  .specialty-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .about-cta {
+    padding: 52px 0;
+  }
+
+  .specialties-section {
+    padding: 56px 0;
+  }
+
+  .specialty-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .specialty-card {
+    min-height: 205px;
+    padding: 20px 16px;
+  }
+
+  .results-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero-illustration {
+    width: min(100%, 400px);
+  }
+}
+
+@media (max-width: 480px) {
+  .specialty-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialty-card {
+    min-height: 0;
+  }
+
+  .hero-float {
+    min-width: 0;
+    padding: 10px 12px;
+  }
+
+  .hero-float-1 {
+    right: -6px;
+  }
+
+  .hero-float-2 {
+    left: -6px;
+  }
+
+  .cta-card {
+    padding: 40px 20px;
+  }
+}
