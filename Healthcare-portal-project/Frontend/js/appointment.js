@@ -1,4 +1,5 @@
 const appointmentForm = document.getElementById("appointmentForm");
+const API_BASE_URL = document.querySelector('meta[name="api-base-url"]')?.content;
 
 appointmentForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -29,8 +30,12 @@ appointmentForm.addEventListener("submit", async function (event) {
     };
 
     try {
+        if (!API_BASE_URL) {
+            throw new Error("API base URL is not configured.");
+        }
+
         const response = await fetch(
-            "http://localhost:5000/api/appointments/book",
+            `${API_BASE_URL}/api/appointments/book`,
             {
                 method: "POST",
 
