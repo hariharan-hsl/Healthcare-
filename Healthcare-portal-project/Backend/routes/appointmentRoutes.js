@@ -26,9 +26,7 @@ router.post("/book", async (req, res) => {
         } = req.body;
 
 
-        // -------------------------------
-        // Validation
-        // -------------------------------
+     
 
         if (
             !patientName ||
