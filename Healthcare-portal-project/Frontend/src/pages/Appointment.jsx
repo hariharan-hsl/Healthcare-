@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { doctors } from "../data/doctors";
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/+$/, "");
 const initial = { patientName:"", patientAge:"", patientGender:"", patientPhone:"", patientEmail:"", appointmentDoctor:"", appointmentDate:"", appointmentTime:"", symptoms:"" };
 
 export default function Appointment() {
@@ -39,7 +40,7 @@ export default function Appointment() {
     setSubmitting(true);
     try {
       const payload = { patientName: form.patientName.trim(), age: Number(form.patientAge), gender: form.patientGender, phone: form.patientPhone.trim(), email: form.patientEmail.trim(), doctor: String(doctor?.name || form.appointmentDoctor), appointmentDate: form.appointmentDate, appointmentTime: form.appointmentTime, symptoms: form.symptoms.trim() };
-      const response = await fetch("http://localhost:5000/api/appointments/book", { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(payload) });
+      const response = await fetch(`${API_BASE_URL}/api/appointments/book`, { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify(payload) });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.message || "Unable to book appointment.");
       setModal(result.appointment);
