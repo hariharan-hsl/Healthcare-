@@ -15,5 +15,10 @@
     "react-dom": "latest",
     "react-router-dom": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "description": "",
+  "main": "vite.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

@@ -9,11 +9,16 @@
     },
     "dependencies": {
         "cors": "^2.8.5",
-        "dotenv": "^16.0.0",
-        "express": "^5.0.0",
+        "dotenv": "^16.6.1",
+        "express": "^5.3.0",
         "mongoose": "^8.24.11"
     },
     "devDependencies": {
         "nodemon": "3.1.11"
-    }
+    },
+    "description": "```text\r src/\r   config/       Database connection and configuration\r   controllers/  HTTP request and response handling\r   middleware/   Database checks and centralized error handling\r   models/       Mongoose schemas\r   routes/       API endpoint definitions\r   services/     Database operations and business logic\r   app.js        Express app configuration\r   server.js     Local server startup and environment loading\r .env            Local secrets (not committed)\r .env.example    Required environment variable template\r ```",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs"
 }
