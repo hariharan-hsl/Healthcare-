@@ -14,28 +14,30 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/health", (req, res) => {
-    const databaseConnected = mongoose.connection.readyState === 1;
+// Cached MongoDB connection, reused across requests (serverless-safe)
+let connectPromise = null;
 
-    res.status(databaseConnected ? 200 : 503).json({
-        status: databaseConnected ? "ok" : "unavailable",
-        database: databaseConnected ? "connected" : "disconnected"
-    });
-});
+async function connectToMongo() {
+    if (mongoose.connection.readyState === 1) return;
 
-app.use("/api/appointments", (req, res, next) => {
-    if (mongoose.connection.readyState !== 1) {
-        return res.status(503).json({
-            success: false,
-            message: "Appointment service is temporarily unavailable"
-        });
+    if (!process.env.MONGO_URI) {
+        throw new Error("MONGO_URI is not set");
     }
 
-    next();
-});
+    if (!connectPromise) {
+        connectPromise = mongoose
+            .connect(process.env.MONGO_URI, {
+                serverSelectionTimeoutMS: 10000
+            })
+            .then(() => console.log("MongoDB connected successfully"))
+            .catch((error) => {
+                connectPromise = null; // allow a retry on the next request
+                throw error;
+            });
+    }
 
-// Routes
-app.use("/api/appointments", appointmentRoutes);
+    await connectPromise;
+}
 
 // Test API
 app.get("/", (req, res) => {
@@ -45,27 +47,38 @@ app.get("/", (req, res) => {
     });
 });
 
-app.listen(port, "0.0.0.0", () => {
-    console.log(`Server listening on port ${port}`);
+app.get("/health", async (req, res) => {
+    try {
+        await connectToMongo();
+        res.status(200).json({ status: "ok", database: "connected" });
+    } catch (error) {
+        console.error("MongoDB connection failed:", error.message);
+        res.status(503).json({ status: "unavailable", database: "disconnected" });
+    }
 });
 
-async function connectToMongo() {
-    if (!process.env.MONGO_URI) {
-        console.error("MONGO_URI is not set; MongoDB connection is disabled");
-        return;
+// Make sure DB is connected before any appointment route runs
+app.use("/api/appointments", async (req, res, next) => {
+    try {
+        await connectToMongo();
+        next();
+    } catch (error) {
+        console.error("MongoDB connection failed:", error.message);
+        res.status(503).json({
+            success: false,
+            message: "Appointment service is temporarily unavailable"
+        });
     }
+});
 
-    while (mongoose.connection.readyState !== 1) {
-        try {
-            await mongoose.connect(process.env.MONGO_URI, {
-                serverSelectionTimeoutMS: 10000
-            });
-            console.log("MongoDB connected successfully");
-        } catch (error) {
-            console.error("MongoDB connection failed:", error.message);
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-        }
-    }
+// Routes
+app.use("/api/appointments", appointmentRoutes);
+
+// Listen only when running locally. Vercel handles requests itself.
+if (!process.env.VERCEL) {
+    app.listen(port, "0.0.0.0", () => {
+        console.log(`Server listening on port ${port}`);
+    });
 }
 
-connectToMongo();
+module.exports = app;
